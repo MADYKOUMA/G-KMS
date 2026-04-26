@@ -423,7 +423,7 @@ export async function getProductOverviewStats(email:string) : Promise<ProductOve
             createdAt:"desc"
         },
         include:{
-           category: true
+           category: true,
         }
        })
 
@@ -431,6 +431,9 @@ export async function getProductOverviewStats(email:string) : Promise<ProductOve
          where:{
             associationId: association.id
         },
+        include:{
+            product:true
+        }
        })
 
        const categoriesSet = new Set(products.map((product) => product.category.name))
@@ -441,11 +444,21 @@ export async function getProductOverviewStats(email:string) : Promise<ProductOve
        const stockValue = products.reduce((acc, product) => {
         return acc + product.price * product.quantity
        }, 0)
+       const totalVendu = transactions.filter(t => t.type === "OUT").reduce((acc, transaction) => {
+        return acc + transaction.product.price * transaction.quantity
+       }, 0)
+       const totalEntrant = transactions.filter(t => t.type === "IN").reduce((acc, transaction) => {
+        return acc + transaction.product.price * transaction.quantity
+       }, 0)
+       const benefice = totalVendu - totalEntrant
     return {
         totalProducts,
         totalCategories,
         totalTransactions,
         stockValue,
+        totalVendu,
+        totalEntrant,
+        benefice,
     }
     } catch (error) {
         console.error(error)
@@ -453,7 +466,10 @@ export async function getProductOverviewStats(email:string) : Promise<ProductOve
             totalProducts:0,
             totalCategories:0,
             totalTransactions:0,
-            stockValue:0
+            stockValue:0,
+            totalVendu:0,
+            totalEntrant:0,
+            benefice:0,
         }
     }
 }

@@ -25,6 +25,7 @@ const TransactionComponent = ({ tx }: { tx: Transactions }) => {
             <p className="font-semibold">{tx.productName}</p>
             <div className="badge badge-soft badge-warning mt-2">{tx.categoryName}</div>
         </div>
+        <div className="font-semibold">{tx.price * tx.quantity} CFA</div>
         <div className="flex flex-cend flex-col">
             <div className="text-right">
             <div>

@@ -39,6 +39,9 @@ export interface ProductOverviewStats {
     totalCategories: number;
     totalTransactions: number;
     stockValue: number;
+    totalVendu: number;
+    totalEntrant:number;
+    benefice:number;
 }
 
 export interface ChartData {
