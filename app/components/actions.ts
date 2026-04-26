@@ -3,7 +3,7 @@
 
 import { prisma } from "@/lib/prisma"
 import { FormDataType, OrderItem, Product, ProductOverviewStats, StockSummary, Transactions } from "@/type"
-import { Category } from "@prisma/client"
+import { Category, TransactionType } from "@prisma/client"
 
 // La partie catégorie
 export async function checkAndAddAssociation(email: string, name:string){
@@ -299,7 +299,7 @@ export async function replenishStockWithTransaction(productId: string, quantity:
 
        await prisma.transactions.create({
         data: {
-            type: "IN",
+            type: TransactionType.IN,
             quantity: quantity,
             productId: productId,
             associationId: association.id
@@ -352,7 +352,7 @@ export async function deductStockWithTransaction(orderItems: OrderItem[], email:
             });
             await tx.transactions.create({
                 data:{
-                    type: "OUT",
+                    type: TransactionType.OUT,
                     quantity: item.quantity,
                     productId: item.productId,
                     associationId: association.id
