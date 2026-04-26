@@ -73,7 +73,7 @@ const page = () => {
     if (!editingCategoryId) return;
     setLoading(true);
     if (email) {
-      await updateCategory(editingCategoryId, email, name, description);
+      await updateCategory(editingCategoryId, name, email, description);
     }
     await loadCategories();
     closeModal(); 
