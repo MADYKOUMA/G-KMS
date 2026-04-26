@@ -11,7 +11,7 @@ interface ProductImageProps {
 const ProductImage: React.FC<ProductImageProps> = ({src, alt, heightClass, widthClass}) => {
   return (
     <div className='avatar'>
-        <div className={' mask mask-squircle ${heightClass} ${widthClass}'}>
+        <div className={`mask mask-squircle ${heightClass ?? ""} ${widthClass ?? ""}`.trim()}>
             <Image
                 src={src}
                 alt={alt}
