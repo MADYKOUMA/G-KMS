@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:images": "node scripts/migrate-local-uploads-to-imagekit.mjs --dry-run"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.4",
@@ -14,6 +15,7 @@
     "@tailwindcss/postcss": "^4.2.3",
     "autoprefixer": "^10.5.0",
     "dotenv": "^17.4.2",
+    "imagekit": "^6.0.0",
     "lucide-react": "^0.577.0",
     "next": "^16.2.1",
     "postcss": "^8.5.10",

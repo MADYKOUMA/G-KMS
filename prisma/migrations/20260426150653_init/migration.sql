@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "TransactionType" AS ENUM ('IN', 'OUT');
+
 -- CreateTable
 CREATE TABLE "Association" (
     "id" TEXT NOT NULL,
@@ -16,6 +19,7 @@ CREATE TABLE "Product" (
     "quantity" INTEGER NOT NULL DEFAULT 0,
     "unit" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
+    "imageFileId" TEXT,
     "categoryId" TEXT NOT NULL,
     "associationId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -37,7 +41,7 @@ CREATE TABLE "Category" (
 -- CreateTable
 CREATE TABLE "Transactions" (
     "id" TEXT NOT NULL,
-    "type" TEXT NOT NULL,
+    "type" "TransactionType" NOT NULL,
     "quantity" INTEGER NOT NULL,
     "productId" TEXT NOT NULL,
     "associationId" TEXT,
@@ -50,16 +54,16 @@ CREATE TABLE "Transactions" (
 CREATE UNIQUE INDEX "Association_email_key" ON "Association"("email");
 
 -- AddForeignKey
-ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Product" ADD CONSTRAINT "Product_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Product" ADD CONSTRAINT "Product_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Category" ADD CONSTRAINT "Category_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Transactions" ADD CONSTRAINT "Transactions_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
