@@ -23,6 +23,7 @@ const page = ({ params }: { params: Promise<{ productId: string }> }) => {
     name: "",
     description: "",
     price: 0,
+    purchasePrice: 0,
     imageUrl: "",
     categoryName: "",
   });
@@ -38,6 +39,7 @@ const page = ({ params }: { params: Promise<{ productId: string }> }) => {
             name: fetchedProduct.name,
             description: fetchedProduct.description,
             price: fetchedProduct.price,
+            purchasePrice: fetchedProduct.purchasePrice ?? 0,
             imageUrl: fetchedProduct.imageUrl,
             categoryName: fetchedProduct.categoryName,
           });
@@ -138,6 +140,15 @@ const page = ({ params }: { params: Promise<{ productId: string }> }) => {
                   placeholder="Prix du produit"
                   className="input input-bordered w-full"
                   value={formData.price}
+                  onChange={handleInputChange}
+                />
+                <div className="text-sm font-semibold mb-2">Prix d'achat</div>
+                <input
+                  type="number"
+                  name="purchasePrice"
+                  placeholder="Prix d'achat"
+                  className="input input-bordered w-full"
+                  value={formData.purchasePrice ?? 0}
                   onChange={handleInputChange}
                 />
                 <div className="text-sm font-semibold mb-2">Catégorie</div>

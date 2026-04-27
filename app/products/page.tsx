@@ -14,6 +14,8 @@ import { toast } from 'react-toastify'
 const page = () => {
     const {user} = useUser()
     const email = user?.primaryEmailAddress?.emailAddress as string
+    const formatAmount = (value: number) =>
+        new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(value);
     
     const [products, setProducts] = useState<Product[]>([])
 
@@ -78,7 +80,8 @@ const page = () => {
                             <th>Image</th>
                             <th>Nom</th>
                             <th>Description</th>
-                            <th>Prix</th>
+                            <th>Prix d&apos;achat</th>
+                            <th>Prix de vente</th>
                             <th>Quantité</th>
                             <th>Catégorie</th>
                             <th>Actions</th>
@@ -103,7 +106,10 @@ const page = () => {
                                     {product.description}
                                 </td>
                                 <td>
-                                    {product.price} CFA
+                                    {formatAmount(product.purchasePrice ?? 0)} CFA
+                                </td>
+                                <td>
+                                    {formatAmount(product.price)} CFA
                                 </td>
                                 <td className='Capitalize'>
                                     {product.quantity} {product.unit}

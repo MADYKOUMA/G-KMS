@@ -21,6 +21,7 @@ model Product {
   name          String
   description   String
   price         Float
+  purchasePrice Float          @default(0)
   quantity      Int            @default(0)
   unit          String
   imageUrl      String

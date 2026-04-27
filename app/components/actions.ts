@@ -136,7 +136,7 @@ export async function readCategories(email:string) : Promise<Category[] | undefi
 // Création du produit
 export async function createProduct(formData: FormDataType, email:string) {
     try {
-       const {name, description, price, imageUrl, categoryId, unit} = formData;
+       const {name, description, price, purchasePrice, imageUrl, categoryId, unit} = formData;
        if(!email || !price || !categoryId || !email){
         throw new Error("Le nom, le price, la catégorie de l'association sont requis pour la création du produit");
     } 
@@ -152,6 +152,7 @@ export async function createProduct(formData: FormDataType, email:string) {
             name,
             description,
             price: Number(price),
+            purchasePrice: Number(purchasePrice ?? 0),
             imageUrl: safeImageUrl,
             categoryId,
             unit: safeUnit,
@@ -167,7 +168,7 @@ export async function createProduct(formData: FormDataType, email:string) {
 // Mise à jour du produit
 export async function updateProduct(formData: FormDataType, email:string) {
     try {
-       const {id, name, description, price, imageUrl} = formData;
+       const {id, name, description, price, purchasePrice, imageUrl} = formData;
        if(!email || !price || !id || !email){
         throw new Error("L'id, le nom, le price et l'email sont requis pour la mise à jour du produit");
     } 
@@ -185,6 +186,7 @@ export async function updateProduct(formData: FormDataType, email:string) {
             name,
             description,
             price: Number(price),
+            purchasePrice: Number(purchasePrice ?? 0),
             imageUrl: imageUrl,
         }
        })
@@ -448,9 +450,14 @@ export async function getProductOverviewStats(email:string) : Promise<ProductOve
         return acc + transaction.product.price * transaction.quantity
        }, 0)
        const totalEntrant = transactions.filter(t => t.type === "IN").reduce((acc, transaction) => {
-        return acc + transaction.product.price * transaction.quantity
+        return acc + transaction.product.purchasePrice * transaction.quantity
        }, 0)
-       const benefice = totalVendu - totalEntrant
+       const benefice = transactions
+        .filter(t => t.type === "OUT")
+        .reduce((acc, transaction) => {
+          const unitProfit = transaction.product.price - transaction.product.purchasePrice
+          return acc + unitProfit * transaction.quantity
+        }, 0)
     return {
         totalProducts,
         totalCategories,

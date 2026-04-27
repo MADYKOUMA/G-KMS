@@ -25,7 +25,7 @@ const RecentTransactions = ({ email }: { email: string }) => {
         if (email) fetchData();
       }, [email]);
   return (
-    <div className='w-full border-2 border-base-200 mt-4 p-4 rounded-3xl'>
+    <div className='w-full border-2 border-base-200 mt-4 p-3 sm:p-4 rounded-3xl'>
          {transactions.length == 0 ? (
           <EmptyState
             message="Aucune transaction pour le moment"
@@ -33,8 +33,8 @@ const RecentTransactions = ({ email }: { email: string }) => {
           />
         ) : (
           <div className="">
-            <h2 className='text-xl font-bold mb-4'>10 dernières transactions</h2>
-            <div className='space-y-4'>
+            <h2 className='text-lg sm:text-xl font-bold mb-3 sm:mb-4'>10 dernières transactions</h2>
+            <div className='space-y-2 sm:space-y-4'>
                 {transactions.map((tx) => (
               <TransactionComponent key={tx.id} tx={tx} />
             ))}

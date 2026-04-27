@@ -10,6 +10,7 @@ export interface FormDataType {
     name: string;
     description: string;
     price: number;
+    purchasePrice?: number;
     quantity?: number;
     categoryId?: string;
     unit?: string;

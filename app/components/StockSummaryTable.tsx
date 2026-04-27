@@ -64,35 +64,37 @@ const StockSummaryTable = ({ email }: { email: string }) => {
       <div className="border-2 border-base-200 rounded-3xl w-full p-4 mt-4">
         <h2 className="text-xl font-bold mb-4">Produits critiques</h2>
         {data.criticalProducts.length > 0 ? (
-          <table className="table">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Image</th>
-                <th>Nom</th>
-                <th>Quantité</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.criticalProducts.map((product, index) => (
-                <tr key={product.id}>
-                  <th>{index + 1}</th>
-                  <td>
-                    <ProductImage
-                      src={product.imageUrl}
-                      alt={product.imageUrl}
-                      heightClass="h-12"
-                      widthClass="w-12"
-                    />
-                  </td>
-                  <td>{product.name}</td>
-                  <td className="Capitalize">
-                    {product.quantity} {product.unit}
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="table table-sm min-w-[520px]">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Image</th>
+                  <th>Nom</th>
+                  <th>Quantité</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.criticalProducts.map((product, index) => (
+                  <tr key={product.id}>
+                    <th>{index + 1}</th>
+                    <td>
+                      <ProductImage
+                        src={product.imageUrl}
+                        alt={product.imageUrl}
+                        heightClass="h-12"
+                        widthClass="w-12"
+                      />
+                    </td>
+                    <td className="max-w-[220px] truncate">{product.name}</td>
+                    <td className="Capitalize whitespace-nowrap">
+                      {product.quantity} {product.unit}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <EmptyState
             message="Aucun produit critique"

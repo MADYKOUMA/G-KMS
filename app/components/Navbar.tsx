@@ -71,7 +71,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="border-b border-base-300 px-5 md:px-[10%] py-4 relative">
+    <div className="border-b border-base-300 px-5 md:px-[10%] py-4 fixed top-0 left-0 right-0 bg-base-100 z-50">
       <div className="flex justify-between items-center">
         <div className="flex items-center">
           <div className="p-2">

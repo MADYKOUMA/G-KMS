@@ -22,6 +22,7 @@ const page = () => {
         name: "",
         description: "",
         price: 0,
+        purchasePrice: 0,
         categoryId: "",
         unit: "",
         imageUrl: ""
@@ -95,6 +96,7 @@ const page = () => {
 
                 <section className='flex md:flex-row flex-col'>
                     <div className='space-y-4 md:w-[450px]'>
+                        <div className="text-sm font-semibold">Nom</div>
                         <input 
                          type="text"
                          name="name" 
@@ -103,6 +105,7 @@ const page = () => {
                          value={formData.name}
                          onChange={handleChange}
                          />
+                         <div className="text-sm font-semibold">Description</div>
                          <textarea
                           name="description" 
                           placeholder='Description'
@@ -111,6 +114,16 @@ const page = () => {
                           onChange={handleChange}
                           >
                         </textarea>
+                         <div className="text-sm font-semibold">Prix d&apos;achat</div>
+                         <input 
+                         type="number"
+                         name="purchasePrice" 
+                         placeholder="Prix d'achat"
+                         className='input input-bordered w-full'
+                         value={formData.purchasePrice ?? 0}
+                         onChange={handleChange}
+                         />  
+                         <div className="text-sm font-semibold">Prix de vente</div>
                          <input 
                          type="number"
                          name="price" 
@@ -119,6 +132,7 @@ const page = () => {
                          value={formData.price}
                          onChange={handleChange}
                          />  
+                         <div className="text-sm font-semibold">Catégorie</div>
                          <select
                           className='select select-bordered w-full'
                           value={formData.categoryId}
@@ -130,6 +144,7 @@ const page = () => {
                                 <option key={cat.id} value={cat.id}>{cat.name}</option>
                             ))}
                           </select>    
+                          <div className="text-sm font-semibold">Unité</div>
                           <select
                           className='select select-bordered w-full'
                           value={formData.unit}
@@ -146,6 +161,7 @@ const page = () => {
                             <option value="pcs">Pièces</option> 
                           </select> 
 
+                          <div className="text-sm font-semibold">Image du produit</div>
                           <input 
                          type="file"
                          accept='image/*'

@@ -12,14 +12,14 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <div className="flex felx-col md:flex-row">
-        <div className="md:w-2/3">
-          <ProductOverview email={email}/>
-          <CategoryChart email={email}/>
-          <RecentTransactions email={email}/>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2 min-w-0">
+          <ProductOverview email={email} />
+          <CategoryChart email={email} />
+          <RecentTransactions email={email} />
         </div>
-        <div className="md:ml-4 md:mt-0 mt-4 md:w-1/3">
-            <StockSummaryTable email={email}/>
+        <div className="lg:col-span-1 min-w-0">
+          <StockSummaryTable email={email} />
         </div>
       </div>
     </Wrapper>

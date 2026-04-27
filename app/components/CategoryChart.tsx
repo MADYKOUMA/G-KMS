@@ -37,8 +37,8 @@ const CategoryChart = ({ email }: { email: string }) => {
     if (email) fetchStats();
   }, [email]);
 
-  const renderChart = (withOverride?: string) => (
-    <ResponsiveContainer width="100%" height={350}>
+  const renderChart = (opts?: { height?: number; fontSize?: number; barSize?: number; labelFontSize?: number }) => (
+    <ResponsiveContainer width="100%" height={opts?.height ?? 350}>
       <BarChart
         data={data}
         margin={{
@@ -47,7 +47,7 @@ const CategoryChart = ({ email }: { email: string }) => {
           left: 0,
           bottom: 5,
         }}
-        barCategoryGap={withOverride ? 0 : "10"}
+        barCategoryGap="10"
       >
         <XAxis 
         dataKey="name" 
@@ -55,7 +55,7 @@ const CategoryChart = ({ email }: { email: string }) => {
         tickLine={false}
         tick={
           {
-            fontSize: 15,
+            fontSize: opts?.fontSize ?? 15,
             fill: "#793205",
             fontWeight: "bold"
           }
@@ -67,13 +67,13 @@ const CategoryChart = ({ email }: { email: string }) => {
         <Bar
           dataKey="value"
           radius={[8, 8, 0, 0]}
-          barSize={200}
+          barSize={opts?.barSize}
         >
           <LabelList
             fill="#793205"
             dataKey="value"
             position="inside"
-            style={{fontSize: "20px", fontWeight: "bold"}}
+            style={{fontSize: `${opts?.labelFontSize ?? 20}px`, fontWeight: "bold"}}
           />
           {data.map((entry, index) =>(
             <Cell key={`cell-${index}`} fill={COLORS.default} cursor="default"/>
@@ -99,7 +99,12 @@ const CategoryChart = ({ email }: { email: string }) => {
   return (
      <div className="w-full border-2 border-base-200 mt-4 p-4 rounded-3xl">
           <h2 className='text-xl font-bold mb-4'>5 catégories avec le plus de produits</h2>
-         {renderChart()}
+          <div className="block md:hidden">
+            {renderChart({ height: 260, fontSize: 12, barSize: 48, labelFontSize: 14 })}
+          </div>
+          <div className="hidden md:block">
+            {renderChart({ height: 350, fontSize: 15, barSize: 90, labelFontSize: 18 })}
+          </div>
       </div>
   );
 };
