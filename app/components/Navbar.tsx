@@ -26,9 +26,9 @@ const Navbar = () => {
 
   const navLinks = [
     { href: "/", label: "Tableau de bord", icon: LayoutDashboard },
+    { href: "/category", label: "Catégories", icon: ListTree },
     { href: "/products", label: "Produits", icon: ShoppingBasket },
     { href: "/new-product", label: "Nouveau produit", icon: Package },
-    { href: "/category", label: "Catégories", icon: ListTree },
     { href: "/sortie", label: "Vente", icon: ShoppingCart },
     { href: "/transactions", label: "Transactions", icon: Receipt },
   ];
