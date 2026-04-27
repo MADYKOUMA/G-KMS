@@ -25,6 +25,8 @@ export interface OrderItem {
     imageUrl: string;
     name: string;
     availableQuantity: number;
+    price?: number;
+    purchasePrice?: number;
 }
 
 export interface Transactions extends PrismaTransaction{

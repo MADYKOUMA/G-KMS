@@ -11,6 +11,7 @@ model Association {
   id           String         @id @default(uuid())
   name         String
   email        String         @unique
+  lastReceiptNumber Int       @default(0)
   categories   Category[]
   products     Product[]
   transactions Transactions[]

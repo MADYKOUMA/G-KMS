@@ -5,9 +5,11 @@ import {
   LayoutDashboard,
   ListTree,
   Menu,
+  Package,
   PackagePlus,
   Receipt,
   ShoppingBasket,
+  ShoppingCart,
   Warehouse,
   X,
 } from "lucide-react";
@@ -24,10 +26,10 @@ const Navbar = () => {
 
   const navLinks = [
     { href: "/", label: "Tableau de bord", icon: LayoutDashboard },
-    { href: "/products", label: "Products", icon: ShoppingBasket },
-    { href: "/new-product", label: "Nouveau produit", icon: PackagePlus },
+    { href: "/products", label: "Produits", icon: ShoppingBasket },
+    { href: "/new-product", label: "Nouveau produit", icon: Package },
     { href: "/category", label: "Catégories", icon: ListTree },
-    { href: "/sortie", label: "Vente", icon: HandHeart },
+    { href: "/sortie", label: "Vente", icon: ShoppingCart },
     { href: "/transactions", label: "Transactions", icon: Receipt },
   ];
 

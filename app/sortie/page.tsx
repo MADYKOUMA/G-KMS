@@ -15,8 +15,16 @@ const page = () => {
   const email = user?.primaryEmailAddress?.emailAddress as string;
   const [products, setProducts] = useState<Product[]>([]);
   const [order, setOrder] = useState<OrderItem[]>([]);
+  const [lastReceipt, setLastReceipt] = useState<{
+    receiptNo: string;
+    createdAt: Date;
+    items: OrderItem[];
+  } | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedProductIds, setSelectproductIds] = useState<string[]>([]);
+
+  const formatAmount = (value: number) =>
+    new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 0 }).format(value);
 
   const fetchProducts = async () => {
     try {
@@ -67,6 +75,8 @@ const page = () => {
             imageUrl: product.imageUrl,
             name: product.name,
             availableQuantity: product.quantity,
+            price: product.price,
+            purchasePrice: product.purchasePrice ?? 0,
           },
         ];
       }
@@ -99,6 +109,93 @@ const page = () => {
     });
   };
 
+  const handlePrintReceipt = () => {
+    if (!lastReceipt) return;
+
+    const total = lastReceipt.items.reduce((acc, item) => {
+      const unitPrice = item.price ?? 0;
+      return acc + unitPrice * item.quantity;
+    }, 0);
+
+    const rowsHtml = lastReceipt.items
+      .map((item) => {
+        const unitPrice = item.price ?? 0;
+        const lineTotal = unitPrice * item.quantity;
+        return `
+          <tr>
+            <td style="padding:6px 0;">${item.name}</td>
+            <td style="padding:6px 0; text-align:right; white-space:nowrap;">${item.quantity} ${item.unit}</td>
+            <td style="padding:6px 0; text-align:right; white-space:nowrap;">${formatAmount(unitPrice)} CFA</td>
+            <td style="padding:6px 0; text-align:right; white-space:nowrap;">${formatAmount(lineTotal)} CFA</td>
+          </tr>
+        `;
+      })
+      .join("");
+
+    const win = window.open("", "_blank", "width=420,height=720");
+    if (!win) {
+      toast.error("Impossible d'ouvrir la fenêtre d'impression (popup bloquée).");
+      return;
+    }
+
+    win.document.open();
+    win.document.write(`
+      <!doctype html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>Reçu ${lastReceipt.receiptNo}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 16px; color: #111; }
+            .header { display:flex; justify-content:space-between; align-items:flex-start; gap: 12px; }
+            h1 { font-size: 18px; margin: 0; }
+            .meta { font-size: 12px; color: #444; margin-top: 6px; }
+            hr { border: none; border-top: 1px solid #ddd; margin: 12px 0; }
+            table { width:100%; border-collapse: collapse; font-size: 12px; }
+            th { text-align:left; font-size: 12px; color: #444; border-bottom: 1px solid #ddd; padding: 6px 0; }
+            .total { display:flex; justify-content:space-between; font-weight:700; margin-top: 10px; }
+            .footer { margin-top: 14px; font-size: 12px; color: #444; text-align:center; }
+            @media print { body { padding: 0; } }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div>
+              <h1>Reçu</h1>
+              <div class="meta">N°: ${lastReceipt.receiptNo}</div>
+              <div class="meta">Date: ${new Date(lastReceipt.createdAt).toLocaleString("fr-FR")}</div>
+            </div>
+          </div>
+          <hr />
+          <table>
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th style="text-align:right;">Qté</th>
+                <th style="text-align:right;">PU</th>
+                <th style="text-align:right;">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+          <hr />
+          <div class="total">
+            <div>Total</div>
+            <div>${formatAmount(total)} CFA</div>
+          </div>
+          <div class="footer">Merci pour votre achat</div>
+          <script>
+            window.onload = () => { window.print(); };
+          </script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  };
+
   const handleSubmit = async () =>{
     try {
         if(order.length == 0){
@@ -107,7 +204,18 @@ const page = () => {
         }
         const response = await deductStockWithTransaction(order, email)
         if(response.success){
+            const receipt = {
+              receiptNo: response.receiptNo ?? "0000",
+              createdAt: new Date(),
+              items: order.map((i) => ({ ...i })),
+            };
             toast.success("Commande confirmée avec succès")
+            setLastReceipt(receipt);
+            setTimeout(() => {
+              (
+                document.getElementById("receipt_modal") as HTMLDialogElement | null
+              )?.showModal?.();
+            }, 0);
             setOrder([])
             setSelectproductIds([])
             fetchProducts()
@@ -158,6 +266,8 @@ const page = () => {
                     <th>Nom</th>
                     <th>Quantité</th>
                     <th>Unité</th>
+                    <th>PU</th>
+                    <th>Total</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -189,6 +299,12 @@ const page = () => {
                         />
                       </td>
                       <td className="capitalize">{item.unit}</td>
+                      <td className="whitespace-nowrap">
+                        {formatAmount(item.price ?? 0)} CFA
+                      </td>
+                      <td className="whitespace-nowrap font-semibold">
+                        {formatAmount((item.price ?? 0) * item.quantity)} CFA
+                      </td>
                       <td>
                         <button
                           className="btn btn-sm btn-error"
@@ -201,12 +317,24 @@ const page = () => {
                   ))}
                 </tbody>
               </table>
+              <div className="flex justify-between items-center mt-4 gap-3 flex-wrap">
+                <div className="font-bold">
+                  Total:{" "}
+                  {formatAmount(
+                    order.reduce(
+                      (acc, item) => acc + (item.price ?? 0) * item.quantity,
+                      0,
+                    ),
+                  )}{" "}
+                  CFA
+                </div>
               <button
                 className="btn btn-primary mt-4 w-fit"
                 onClick={handleSubmit}
               >
                 Confimer la commande
               </button>
+              </div>
             </div>
           ) : (
             <EmptyState
@@ -216,6 +344,86 @@ const page = () => {
           )}
         </div>
       </div>
+
+      <dialog id="receipt_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Reçu</h3>
+          {lastReceipt ? (
+            <div className="mt-3 space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-base-content/70">N°</span>
+                <span className="font-semibold">{lastReceipt.receiptNo}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-base-content/70">Date</span>
+                <span className="font-semibold">
+                  {new Date(lastReceipt.createdAt).toLocaleString("fr-FR")}
+                </span>
+              </div>
+              <div className="divider my-2" />
+              <div className="max-h-56 overflow-auto">
+                <table className="table table-sm">
+                  <thead>
+                    <tr>
+                      <th>Article</th>
+                      <th className="text-right">Qté</th>
+                      <th className="text-right">PU</th>
+                      <th className="text-right">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {lastReceipt.items.map((it) => (
+                      <tr key={it.productId}>
+                        <td className="max-w-[220px] truncate">{it.name}</td>
+                        <td className="text-right whitespace-nowrap">
+                          {it.quantity} {it.unit}
+                        </td>
+                        <td className="text-right whitespace-nowrap">
+                          {formatAmount(it.price ?? 0)} CFA
+                        </td>
+                        <td className="text-right whitespace-nowrap font-semibold">
+                          {formatAmount((it.price ?? 0) * it.quantity)} CFA
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="divider my-2" />
+              <div className="flex justify-between font-bold">
+                <span>Total</span>
+                <span>
+                  {formatAmount(
+                    lastReceipt.items.reduce(
+                      (acc, it) => acc + (it.price ?? 0) * it.quantity,
+                      0,
+                    ),
+                  )}{" "}
+                  CFA
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 text-sm text-base-content/70">
+              Aucun reçu disponible.
+            </div>
+          )}
+
+          <div className="modal-action">
+            <form method="dialog" className="flex gap-2">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handlePrintReceipt}
+                disabled={!lastReceipt}
+              >
+                Imprimer
+              </button>
+              <button className="btn">Fermer</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </Wrapper>
   );
 };

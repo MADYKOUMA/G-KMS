@@ -339,7 +339,15 @@ export async function deductStockWithTransaction(orderItems: OrderItem[], email:
         }
        }
    
-       await prisma.$transaction(async (tx) =>{
+       const receiptNo = await prisma.$transaction(async (tx) =>{
+        const updatedAssociation = await tx.association.update({
+            where: { id: association.id },
+            data: { lastReceiptNumber: { increment: 1 } },
+            select: { lastReceiptNumber: true },
+        })
+
+        const receiptNo = String(updatedAssociation.lastReceiptNumber).padStart(4, "0")
+
         for(const item of orderItems){
            await tx.product.update({
                 where: {
@@ -361,8 +369,9 @@ export async function deductStockWithTransaction(orderItems: OrderItem[], email:
                 }
             })
         }
+        return receiptNo
        })
-       return {success : true}
+       return {success : true, receiptNo}
     } catch (error) {
         console.error(error)
         return {success : false, message: error}
