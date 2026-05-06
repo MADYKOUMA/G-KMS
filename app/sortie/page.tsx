@@ -171,10 +171,10 @@ const page = () => {
           <table>
             <thead>
               <tr>
-                <th>Article</th>
-                <th style="text-align:right;">Qté</th>
-                <th style="text-align:right;">PU</th>
-                <th style="text-align:right;">Total</th>
+                <th style="color:blue;">Article</th>
+                <th style="text-align:right; color:blue;">Qté</th>
+                <th style="text-align:right; color:blue;">PU</th>
+                <th style="text-align:right; color:blue;">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -262,13 +262,13 @@ const page = () => {
               <table className="table w-full scroll-auto">
                 <thead>
                   <tr>
-                    <th>Image</th>
-                    <th>Nom</th>
-                    <th>Quantité</th>
-                    <th>Unité</th>
-                    <th>PU</th>
-                    <th>Total</th>
-                    <th>Actions</th>
+                    <th className='text-primary'>Image</th>
+                    <th className='text-primary'>Nom</th>
+                    <th className='text-primary'>Quantité</th>
+                    <th className='text-primary'>Unité</th>
+                    <th className='text-primary'>PU</th>
+                    <th className='text-primary'>Total</th>
+                    <th className='text-primary'>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -339,7 +339,7 @@ const page = () => {
           ) : (
             <EmptyState
               message="Aucun produit dans le panier"
-              IconComponent="HandHeart"
+              IconComponent="ShoppingCart"
             />
           )}
         </div>
@@ -365,10 +365,10 @@ const page = () => {
                 <table className="table table-sm">
                   <thead>
                     <tr>
-                      <th>Article</th>
-                      <th className="text-right">Qté</th>
-                      <th className="text-right">PU</th>
-                      <th className="text-right">Total</th>
+                      <th className="text-primary">Article</th>
+                      <th className="text-right text-primary">Qté</th>
+                      <th className="text-right text-primary">PU</th>
+                      <th className="text-right text-primary">Total</th>
                     </tr>
                   </thead>
                   <tbody>

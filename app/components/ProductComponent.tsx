@@ -33,10 +33,10 @@ const ProductComponent: React.FC<ProductComponentProps> = ({
       </div>
       <div className="ml-4 space-y-2 flex flex-col">
         <h2 className="text-lg font-bold">{product.name}</h2>
-        <div className="badge badge-warning badge-soft">
+        <div className="badge badge-info badge-soft">
             {product.categoryName}
         </div>
-        <div className="badge badge-warning badge-soft">
+        <div className="badge badge-success badge-soft font-bold">
             {product.quantity} {product.unit}
         </div>
         {add && handleAddToCard && (

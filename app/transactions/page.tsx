@@ -129,7 +129,7 @@ const page = () => {
         {transactions.length == 0 ? (
           <EmptyState
             message="Aucune transaction pour le moment"
-            IconComponent="CaptionsOff"
+            IconComponent="Receipt"
           />
         ) : (
           <div className="space-y-4 w-full">

@@ -18,7 +18,7 @@ const CategoryChart = ({ email }: { email: string }) => {
   const [data, setData] = useState<ChartData[]>([]);
 
   const COLORS = {
-    default: "#F1D2BF"
+    default: "#9fd9ee"
   }
   const fetchStats = async () => {
     try {
@@ -56,7 +56,7 @@ const CategoryChart = ({ email }: { email: string }) => {
         tick={
           {
             fontSize: opts?.fontSize ?? 15,
-            fill: "#793205",
+            fill: "#000000",
             fontWeight: "bold"
           }
         }
@@ -70,7 +70,7 @@ const CategoryChart = ({ email }: { email: string }) => {
           barSize={opts?.barSize}
         >
           <LabelList
-            fill="#793205"
+            fill="#000000"
             dataKey="value"
             position="inside"
             style={{fontSize: `${opts?.labelFontSize ?? 20}px`, fontWeight: "bold"}}

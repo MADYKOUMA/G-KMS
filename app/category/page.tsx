@@ -122,7 +122,7 @@ const page = () => {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    className="btn btn-sm"
+                    className="btn btn-sm btn-primary"
                     onClick={() => openEditModal(category)}
                   >
                     <Pencil className="w-4 h-4" />

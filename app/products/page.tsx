@@ -77,14 +77,14 @@ const page = () => {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Image</th>
-                            <th>Nom</th>
-                            <th>Description</th>
-                            <th>Prix d&apos;achat</th>
-                            <th>Prix de vente</th>
-                            <th>Quantité</th>
-                            <th>Catégorie</th>
-                            <th>Actions</th>
+                            <th className='text-primary'>Image</th>
+                            <th className='text-primary'>Nom</th>
+                            <th className='text-primary'>Description</th>
+                            <th className='text-primary'>Prix d&apos;achat</th>
+                            <th className='text-primary'>Prix de vente</th>
+                            <th className='text-primary'>Quantité</th>
+                            <th className='text-primary'>Catégorie</th>
+                            <th className='text-primary'>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,7 +121,7 @@ const page = () => {
                                     <Link className='btn btn-xs w-fil btn-primary' href={`/update-product/${product.id}`}>
                                       Modifier
                                     </Link>
-                                    <button>
+                                    <button className='btn btn-xs btn-error'>
                                         <Trash className='w-4 h-4' onClick={() => handleDeleteProduct(product)}/>
                                     </button>
                                 </td>

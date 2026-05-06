@@ -547,7 +547,7 @@ export async function getStockSummary(email:string) : Promise<StockSummary> {
        })
 
        const inStock = allProducts.filter((p) => p.quantity > 5)
-       const lowStock = allProducts.filter((p) => p.quantity > 0 && p.quantity <=0)
+       const lowStock = allProducts.filter((p) => p.quantity > 0 && p.quantity <=5)
        const outOfStock = allProducts.filter((p) => p.quantity === 0)
        const criticalProducts = [...lowStock, ...outOfStock]
        return {

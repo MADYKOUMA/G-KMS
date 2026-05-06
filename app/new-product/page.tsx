@@ -157,7 +157,6 @@ const page = () => {
                             <option value="l">Litre</option> 
                             <option value="m">Mètre</option> 
                             <option value="cm">Centimètre</option>  
-                            <option value="h">Heure</option> 
                             <option value="pcs">Pièces</option> 
                           </select> 
 

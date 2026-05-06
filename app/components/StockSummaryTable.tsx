@@ -36,7 +36,7 @@ const StockSummaryTable = ({ email }: { email: string }) => {
         <li className="step step-primary">
           <div>
             <span className="text-sm mr-4 font-bold">Stock normal</span>
-            <div className="badge badge-soft badge-success">
+            <div className="badge badge-soft badge-success font-bold">
               {data.inSctockCount}
             </div>
           </div>
@@ -45,7 +45,7 @@ const StockSummaryTable = ({ email }: { email: string }) => {
         <li className="step step-primary">
           <div>
             <span className="text-sm mr-4 font-bold">Stock faible</span>
-            <div className="badge badge-soft badge-warning">
+            <div className="badge badge-soft badge-warning font-bold">
               {data.lowStockCount}
             </div>
           </div>
@@ -54,7 +54,7 @@ const StockSummaryTable = ({ email }: { email: string }) => {
         <li className="step step-primary">
           <div>
             <span className="text-sm mr-4 font-bold">Rupture</span>
-            <div className="badge badge-soft badge-error">
+            <div className="badge badge-soft badge-error font-bold">
               {data.outOfStockCount}
             </div>
           </div>
@@ -69,9 +69,9 @@ const StockSummaryTable = ({ email }: { email: string }) => {
               <thead>
                 <tr>
                   <th></th>
-                  <th>Image</th>
-                  <th>Nom</th>
-                  <th>Quantité</th>
+                  <th className="text-primary">Image</th>
+                  <th  className="text-primary">Nom</th>
+                  <th  className="text-primary">Quantité</th>
                 </tr>
               </thead>
               <tbody>

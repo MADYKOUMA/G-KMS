@@ -26,7 +26,7 @@ const TransactionComponent = ({ tx }: { tx: Transactions }) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-2 sm:gap-4 min-w-0">
         <div className="min-w-0">
           <p className="font-semibold text-sm sm:text-base truncate">{tx.productName}</p>
-          <div className="badge badge-soft badge-warning badge-sm mt-1 sm:mt-2 max-w-full truncate">
+          <div className="badge badge-soft badge-info font-bold badge-sm mt-1 sm:mt-2 max-w-full truncate">
             {tx.categoryName}
           </div>
         </div>
